@@ -1,9 +1,11 @@
 var multi_drop_obj = {};
 
-		function circle_select(){
-			//debugger;
+		function circle_select(toggleValue=false){
+			// debugger;
+			var toggleText = (toggleValue)?'Unselect All':'Select All';
 			$(".btn-circle-select").remove();
 			$('.items_list').remove();
+			$('.circleDiv').remove();
 			var selects = $('.circle_select');
 			$.each(selects,function(k,v){
 				var current_select = v;
@@ -14,9 +16,13 @@ var multi_drop_obj = {};
 					$(current_select).parent().append('<div class="items_list"></div>');
 
 					// adding dropdown div
-					var dropdown_div = '<div class="dropdown" style="display: inline-block;"><button class="btn btn-default btn-circle-select dropdown-toggle add_button" data-toggle="dropdown"><i class="glyphicon glyphicon-plus"></i></button><div class="dropdown-menu multi_select_dropdown">';
+					var dropdown_div = '<div class="dropdown circleDiv" style="display: inline-block;"><button class="btn btn-default btn-circle-select dropdown-toggle add_button" type="button"><i class="glyphicon glyphicon-plus" onclick="showDropdown(this)"></i></button><div class="dropdown-menu multi_select_dropdown">';
 
 					var list_options = {};
+					if($(current_select).children().length > 0){
+						dropdown_div += '<div class="row notification_row selectAllRow" data-select_id="'+current_id+'" style="height: auto;width: auto;"><div class="col-md-12"><div class="col-md-12 list_item"><span class="highlight text-center item_name" onclick="selectAllToggle(this)" data-value="'+toggleValue+'"> '+toggleText+' </span></div> </div></div>';
+					}
+
 					$.each($(current_select).children(),function(k,v){
 						//debugger;
 						var code = v.value;
@@ -73,11 +79,16 @@ var multi_drop_obj = {};
 					}
 				});
 			}
+			// if(do_hide){
+			// 	$($(items_div).parent().find('.dropdown')[1]).removeClass('open')
+			// }else{
+			// 	$($(items_div).parent().find('.dropdown')[1]).addClass('open')
+			// }
 		}
 
 
 		function add_item(target){
-			//debugger;
+			// debugger;
 			var code = $($($(target).parent()).parent()).parent()[0].classList[2];
 			var select_id = $($($($(target).parent()).parent()).parent()[0]).data('select_id');
 
@@ -86,6 +97,7 @@ var multi_drop_obj = {};
 			manage_circle_content(select_id);
 			//debugger;
 			// to not hide the item dropdown
+			// debugger;
 			// var items_div = $($('#'+select_id).parent()).find('.items_list');
 			// $($($(items_div[0]).parent()[0]).find('.multi_select_dropdown')).show();
 		}
